@@ -1,93 +1,93 @@
-import { useEffect, useState, useRef } from "react";
-import { predict } from "@/api/predict";
-import Message from "@/components/Message";
-import CommonBtn from '@/components/CommonBtn';
+import { useEffect, useState, useRef } from 'react'
+import { predict } from '@/api/predict'
+import Message from '@/components/Message'
+import CommonBtn from '@/components/CommonBtn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Home = () => {
-    const [messageList, setMessageList] = useState([]);
-    const [userInput, setUserInput] = useState("");
-    const messageEndRef = useRef(null);
+  const [messageList, setMessageList] = useState([])
+  const [userInput, setUserInput] = useState('')
+  const messageEndRef = useRef(null)
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const newMessage = {
-            fromWho: 'user',
-            type: 'text',
-            cont: userInput
-        }
-        setMessageList(prev => [...prev, newMessage])
-        setUserInput("")
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const newMessage = {
+      fromWho: 'user',
+      type: 'text',
+      cont: userInput,
     }
+    setMessageList((prev) => [...prev, newMessage])
+    setUserInput('')
+  }
 
-    useEffect(() => {
-        setMessageList([
-            {
-                fromWho: 'user',
-                type: 'text',
-                cont: "When you're backed against the wall, break the god damn thing down."
-            },
-            {
-                fromWho: 'bot',
-                type: 'text',
-                cont: "Excuses don't win championships."
-            },
-            {
-                fromWho: 'bot',
-                type: 'text',
-                cont: "Oh yeah, did Michael Jordan tell you that?"
-            },
-            {
-                fromWho: 'user',
-                type: 'text',
-                cont: "When you're backed against the wall, break the god damn thing down."
-            },
-            {
-                fromWho: 'user',
-                type: 'text',
-                cont: "Oh yeah, did Michael Jordan tell you that?"
-            },
-            {
-                fromWho: 'bot',
-                type: 'text',
-                cont: "When you're backed against the wall, break the god damn thing down."
-            },
-            {
-                fromWho: 'user',
-                type: 'text',
-                cont: "When you're backed against the wall, break the god damn thing down."
-            },
-            {
-                fromWho: 'bot',
-                type: 'list',
-                cont: [
-                    {
-                        imgPath: "http://emilcarlsson.se/assets/mikeross.png",
-                        title: "data.title", 
-                        address: "data.address", 
-                        link: "data.link", 
-                    },
-                    {
-                        imgPath: "http://emilcarlsson.se/assets/mikeross.png",
-                        title: "data.title.2222", 
-                        address: "data.address.2222", 
-                        link: "data.link.2222", 
-                    },
-                ]
-            },
-        ])
-    }, [])
-    
-    useEffect(() => {
-        messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }, [messageList]);
+  useEffect(() => {
+    setMessageList([
+      {
+        fromWho: 'user',
+        type: 'text',
+        cont: "When you're backed against the wall, break the god damn thing down.",
+      },
+      {
+        fromWho: 'bot',
+        type: 'text',
+        cont: "Excuses don't win championships.",
+      },
+      {
+        fromWho: 'bot',
+        type: 'text',
+        cont: 'Oh yeah, did Michael Jordan tell you that?',
+      },
+      {
+        fromWho: 'user',
+        type: 'text',
+        cont: "When you're backed against the wall, break the god damn thing down.",
+      },
+      {
+        fromWho: 'user',
+        type: 'text',
+        cont: 'Oh yeah, did Michael Jordan tell you that?',
+      },
+      {
+        fromWho: 'bot',
+        type: 'text',
+        cont: "When you're backed against the wall, break the god damn thing down.",
+      },
+      {
+        fromWho: 'user',
+        type: 'text',
+        cont: "When you're backed against the wall, break the god damn thing down.",
+      },
+      {
+        fromWho: 'bot',
+        type: 'list',
+        cont: [
+          {
+            imgPath: 'http://emilcarlsson.se/assets/mikeross.png',
+            title: 'data.title',
+            address: 'data.address',
+            link: 'data.link',
+          },
+          {
+            imgPath: 'http://emilcarlsson.se/assets/mikeross.png',
+            title: 'data.title.2222',
+            address: 'data.address.2222',
+            link: 'data.link.2222',
+          },
+        ],
+      },
+    ])
+  }, [])
+
+  useEffect(() => {
+    messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
+  }, [messageList])
 
   return (
     <div id="frame">
-        <div id="sidepanel">
-            <CommonBtn type="button" text="배가 아픔"/>
-            <CommonBtn type="link" text="피부 난리남" linkTo="/map"/>
-            {/* <div id="profile">
+      <div id="sidepanel">
+        <CommonBtn type="button" text="배가 아픔" />
+        <CommonBtn type="link" text="피부 난리남" linkTo="/map" />
+        {/* <div id="profile">
                 <div className="wrap">
                     <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" className="online" alt="" />
                     <p>Mike Ross</p>
@@ -222,43 +222,38 @@ const Home = () => {
                 <button id="addcontact"><i className="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
                 <button id="settings"><i className="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
             </div> */}
+      </div>
+      <div className="content">
+        <div className="contact-profile">
+          <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+          <p>Harvey Specter</p>
+          <div className="social-media">
+            <i className="fa fa-facebook" aria-hidden="true"></i>
+            <i className="fa fa-twitter" aria-hidden="true"></i>
+            <i className="fa fa-instagram" aria-hidden="true"></i>
+          </div>
         </div>
-        <div className="content">
-            <div className="contact-profile">
-                <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                <p>Harvey Specter</p>
-                <div className="social-media">
-                    <i className="fa fa-facebook" aria-hidden="true"></i>
-                    <i className="fa fa-twitter" aria-hidden="true"></i>
-                     <i className="fa fa-instagram" aria-hidden="true"></i>
-                </div>
-            </div>
-            <div className="messages">
-                <div>
-                    {messageList.map((item, index) => {
-                        return <Message fromWho={item.fromWho} type={item.type} cont={item.cont} key={index}/>
-                    })}
-                </div>
-                <div ref={messageEndRef}></div>
-            </div>
-            <div className="message-input">
-                <div className="wrap">
-                    <form onSubmit={handleSubmit}>
-                        <input
-                        type="text"
-                        placeholder="Write your message..."
-                        value={userInput}
-                        onChange={(e) => setUserInput(e.target.value)}
-                        />
-                        <button className="submit">
-                            <FontAwesomeIcon icon="fa-solid fa-paper-plane" className="fa fa-paperclip attachment" />
-                        </button>
-                    </form>
-                </div>
-            </div>
+        <div className="messages">
+          <div>
+            {messageList.map((item, index) => {
+              return <Message fromWho={item.fromWho} type={item.type} cont={item.cont} key={index} />
+            })}
+          </div>
+          <div ref={messageEndRef}></div>
         </div>
+        <div className="message-input">
+          <div className="wrap">
+            <form onSubmit={handleSubmit}>
+              <input type="text" placeholder="Write your message..." value={userInput} onChange={(e) => setUserInput(e.target.value)} />
+              <button className="submit">
+                <FontAwesomeIcon icon="fa-solid fa-paper-plane" className="fa fa-paperclip attachment" />
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

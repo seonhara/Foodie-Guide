@@ -24,6 +24,7 @@ dist-ssr
 *.sw?
 
 # back
+foodienv/
 pyvenv.cfg
 
 # Byte-compiled / optimized / DLL files
@@ -74,4 +75,3 @@ htmlcov/
 dist/
 build/
 *.egg-info/
-
