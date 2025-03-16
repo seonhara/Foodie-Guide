@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { predict } from '@/api/predict'
 import { naver } from '@/api/naver'
 import MapItem from '@/components/MapItem'
 
