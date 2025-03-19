@@ -1,27 +1,27 @@
 import { useEffect, useState, useRef } from 'react'
 import { recommendations } from '@/api/recommendations'
+import { langchain } from '@/api/langchain'
 import Message from '@/components/Message'
 import CommonBtn from '@/components/CommonBtn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Home = () => {
   const [messageList, setMessageList] = useState([])
+  const [buttonList, setButtonList] = useState([])
   const [userInput, setUserInput] = useState('')
   const messageEndRef = useRef(null)
 
-  const addMessageList = () => {
-    // 화면에 메시지 보이기
+  const addMessageList = (input) => {
     const newMessage = {
       fromWho: 'user',
       type: 'text',
-      cont: userInput,
+      cont: input,
     }
     setMessageList((prev) => [...prev, newMessage])
     setUserInput('')
   }
-  const getModelResult = async () => {
-    // 모델에 쿼리 진송
-    const result = await recommendations(userInput)
+  const getModelResult = async (query) => {
+    const result = await langchain(query)
     console.log('result', result.reply)
     const newMessage = {
       fromWho: 'bot',
@@ -31,10 +31,10 @@ const Home = () => {
     setMessageList((prev) => [...prev, newMessage])
   }
 
-  const handleSubmit = async (event) => {
+  const getBotReply = async (event, user_message) => {
     event.preventDefault()
-    addMessageList()
-    await getModelResult()
+    addMessageList(user_message)
+    await getModelResult(user_message)
   }
 
   useEffect(() => {
@@ -68,6 +68,23 @@ const Home = () => {
         ],
       },
     ])
+    setButtonList([
+      {
+        type: 'button',
+        text: '배아픔',
+        message: '나 배가 아픈데 어떤 걸 먹어야 될까?',
+      },
+      {
+        type: 'button',
+        text: '두드러기',
+        message: '몸에 두드러기가 났어. 뭘 먹어야 될까?',
+      },
+      {
+        type: 'link',
+        text: '맵 링크',
+        linkTo: '/map',
+      },
+    ])
   }, [])
 
   useEffect(() => {
@@ -77,19 +94,11 @@ const Home = () => {
   return (
     <div id="frame">
       <div id="sidepanel">
-        <CommonBtn type="button" text="배가 아픔" />
-        <CommonBtn type="link" text="피부 난리남" linkTo="/map" />
+        {buttonList.map((item, index) => {
+          return <CommonBtn type={item.type} text={item.text} linkTo={item.linkTo ? item.linkTo : ''} onClick={(event) => getBotReply(event, item.message)} key={index} />
+        })}
       </div>
       <div className="content">
-        <div className="contact-profile">
-          <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-          <p>Harvey Specter</p>
-          <div className="social-media">
-            <i className="fa fa-facebook" aria-hidden="true"></i>
-            <i className="fa fa-twitter" aria-hidden="true"></i>
-            <i className="fa fa-instagram" aria-hidden="true"></i>
-          </div>
-        </div>
         <div className="messages">
           <div>
             {messageList.map((item, index) => {
@@ -100,7 +109,7 @@ const Home = () => {
         </div>
         <div className="message-input">
           <div className="wrap">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(event) => getBotReply(event, userInput)}>
               <input type="text" placeholder="Write your message..." value={userInput} onChange={(e) => setUserInput(e.target.value)} />
               <button className="submit">
                 <FontAwesomeIcon icon="fa-solid fa-paper-plane" className="fa fa-paperclip attachment" />
