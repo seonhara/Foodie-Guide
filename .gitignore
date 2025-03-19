@@ -24,7 +24,7 @@ dist-ssr
 *.sw?
 
 # back
-foodienv/
+back/foodienv/
 pyvenv.cfg
 
 # Byte-compiled / optimized / DLL files

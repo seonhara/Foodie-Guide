@@ -29,8 +29,6 @@ const Home = () => {
       cont: result.reply,
     }
     setMessageList((prev) => [...prev, newMessage])
-
-    // setRecommendResult(result.recommendations)
   }
 
   const handleSubmit = async (event) => {
