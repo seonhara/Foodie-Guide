@@ -26,6 +26,8 @@ dist-ssr
 # back
 back/foodienv/
 pyvenv.cfg
+back/chromadb/
+back/*.chroma
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
