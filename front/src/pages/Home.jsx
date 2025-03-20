@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { recommendations } from '@/api/recommendations'
-import { langchain } from '@/api/langchain'
+import { getAiagent } from '@/api/getAiagent'
 import Message from '@/components/Message'
 import CommonBtn from '@/components/CommonBtn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -21,8 +20,8 @@ const Home = () => {
     setUserInput('')
   }
   const getModelResult = async (query) => {
-    const result = await langchain(query)
-    console.log('result', result.reply)
+    const result = await getAiagent(query)
+
     const newMessage = {
       fromWho: 'bot',
       type: 'text',
