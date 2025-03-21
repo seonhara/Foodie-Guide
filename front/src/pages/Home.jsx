@@ -3,10 +3,11 @@ import { getAiagent } from '@/api/getAiagent'
 import Message from '@/components/Message'
 import CommonBtn from '@/components/CommonBtn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import sideBtnData from '@/data/sideButton'
 
 const Home = () => {
   const [messageList, setMessageList] = useState([])
-  const [buttonList, setButtonList] = useState([])
+  const [buttonList, setButtonList] = useState({})
   const [userInput, setUserInput] = useState('')
   const messageEndRef = useRef(null)
 
@@ -37,6 +38,8 @@ const Home = () => {
   }
 
   useEffect(() => {
+    console.log('sideBtnData', sideBtnData)
+
     setMessageList([
       {
         fromWho: 'user',
@@ -67,23 +70,7 @@ const Home = () => {
         ],
       },
     ])
-    setButtonList([
-      {
-        type: 'button',
-        text: '배아픔',
-        message: '나 배가 아픈데 어떤 걸 먹어야 될까?',
-      },
-      {
-        type: 'button',
-        text: '두드러기',
-        message: '몸에 두드러기가 났어. 뭘 먹어야 될까?',
-      },
-      {
-        type: 'link',
-        text: '맵 링크',
-        linkTo: '/map',
-      },
-    ])
+    setButtonList(sideBtnData)
   }, [])
 
   useEffect(() => {
