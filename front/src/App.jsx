@@ -11,7 +11,7 @@ library.add(fas)
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+    <Route path="/" element={<Home />} />
       <Route path="/map" element={<Map />} />
       <Route path="/model" element={<ModelTest />} />
     </Routes>
