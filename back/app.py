@@ -1,11 +1,13 @@
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
+import os
+from dotenv import load_dotenv
 import aiagentModel
 import model
-from dotenv import load_dotenv
 load_dotenv() 
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24) # 비밀 키 설정 (세션을 안전하게 사용하기 위해 필요)
 CORS(app)  # Vite 프론트엔드와 CORS 문제 방지
 
 # chatbot-llm 추가
