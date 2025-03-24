@@ -1,44 +1,42 @@
 import { useState, useEffect } from 'react'
 import { getRestaurantsByNaverMap } from '@/api/getRestaurantsByNaverMap'
-import useGeoLocation from '@/hooks/useGeoLocation'
 
-const useGetRestaurants = (menu, otherLocation) => {
-  const [restaurants, setRestaurants] = useState(null)
+const useGetRestaurants = (menus, currentLocation, currentAddress, otherLocation) => {
+  const [restaurants, setRestaurants] = useState([])
   const [nearestIndex, setNearestIndex] = useState(-1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const { currentLocation, currentAddress, geoError = error, requestLocation } = useGeoLocation()
 
   const getRestaurants = async () => {
-    if (!menu || !currentLocation) return // 필수 값이 없으면 실행하지 않음
+    console.log('!!!', menus, currentLocation)
+
+    if (menus.length == 0 || !currentLocation) return // 필수 값이 없으면 실행하지 않음
 
     setLoading(true)
     setError(null)
     try {
-      let query
-      if (otherLocation) {
-        query = `${otherLocation} ${menu}`
-      } else {
-        query = `${currentAddress} ${menu}`
-      }
-      const resultByNaverMap = await getRestaurantsByNaverMap(query)
-      console.log('getRestaurantsByNaverMap', resultByNaverMap)
+      const results = []
 
-      const result = resultByNaverMap.map((item) => {
-        return {
+      for (const menu of menus) {
+        let query = otherLocation ? `${otherLocation} ${menu}` : `${currentAddress} ${menu}`
+
+        const resultByNaverMap = await getRestaurantsByNaverMap(query)
+        console.log('getRestaurantsByNaverMap', resultByNaverMap)
+
+        const mappedResults = resultByNaverMap.map((item) => ({
           title: item.title,
           address: item.address,
           link: item.link,
           lat: Number(item.mapy) / 10 ** 7,
           lng: Number(item.mapx) / 10 ** 7,
-          // category: item.category,
-          // description: item.description,
-          // roadAddress: item.roadAddress,
-          // telephone: item.telephone,
-        }
-      })
+        }))
 
-      setRestaurants(result)
+        results.push(...mappedResults)
+      }
+
+      const uniqueResults = Array.from(new Map(results.map((item) => [item.title, item])).values())
+
+      setRestaurants([...uniqueResults])
     } catch (err) {
       setError(err)
     } finally {
@@ -60,15 +58,11 @@ const useGetRestaurants = (menu, otherLocation) => {
   }
 
   useEffect(() => {
-    getRestaurants()
-  }, [menu, currentLocation, otherLocation])
-
-  useEffect(() => {
     if (!restaurants) return
     calculateNearestStoreIndex()
   }, [restaurants])
 
-  return { restaurants, nearestIndex, loading, error }
+  return { restaurants, nearestIndex, loading, error, getRestaurants }
 }
 
 export default useGetRestaurants

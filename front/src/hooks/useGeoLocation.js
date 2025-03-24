@@ -4,29 +4,41 @@ import { getGeoCode } from '@/api/getGeoCode'
 const useGeoLocation = (options) => {
   const [currentLocation, setCurrentLocation] = useState({ lat: 37.5665, lng: 126.978 })
   const [currentAddress, setCurrentAddress] = useState('')
-  // const [currentAddress, setCurrentAddress] = useState('서울특별시 중구 태평로1가')
   const [error, setError] = useState('')
 
-  const handleSuccess = (pos) => {
+  const getcurrentAddress = async (latitude, longitude) => {
+    const geoCode = await getGeoCode(latitude || currentLocation.lat, longitude || currentLocation.lng)
+    const address = `${geoCode.area1.name} ${geoCode.area2.name} ${geoCode.area3.name}`
+    console.log('address', address)
+
+    setCurrentAddress(address)
+  }
+
+  const handleSuccess = async (pos) => {
     const { latitude, longitude } = pos.coords
     setCurrentLocation({ lat: latitude, lng: longitude })
+    await getcurrentAddress(latitude, longitude)
     console.log('??', latitude, longitude)
   }
 
   const handleError = (err) => {
-    setError(err.message)
+    if (error.code === error.PERMISSION_DENIED) {
+      setError('사용자 위치 권한을 허용으로 설정해주세요.')
+    } else {
+      setError(err.message)
+    }
     console.log('err', err.message)
   }
 
   const requestLocation = () => {
     if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser.')
+      setError('위치 공유를 지원하지 않는 브라우저입니다.')
       return
     }
 
     const defaultOptions = {
       enableHighAccuracy: false,
-      timeout: 5000,
+      timeout: 10000,
       maximumAge: 0,
     }
 
@@ -35,22 +47,19 @@ const useGeoLocation = (options) => {
     console.log('??', navigator.geolocation)
   }
 
-  const getcurrentAddress = async () => {
-    const geoCode = await getGeoCode(currentLocation.lat, currentLocation.lng)
-    const address = `${geoCode.area1.name} ${geoCode.area2.name} ${geoCode.area3.name}`
-    setCurrentAddress(address)
-  }
-
-  useEffect(() => {
-    requestLocation()
-  }, [])
-
   useEffect(() => {
     getcurrentAddress()
-    // const latitude = currentLocation?.lat ? currentLocation.lat : 37.5665 //  위도 (서울)
-    // const longitude = currentLocation?.lng ? currentLocation.lng : 126.978 // 경도 (서울)
-    // setCurrentLocation({ lat: latitude, lng: longitude })
-  }, [currentLocation])
+    // requestLocation()
+  }, [])
+
+  // useEffect(() => {
+  //   // console.log('currentLocation', currentLocation)
+  //   // console.log('currentAddress', currentAddress)
+  //   // getcurrentAddress()
+  //   // const latitude = currentLocation?.lat ? currentLocation.lat : 37.5665 //  위도 (서울)
+  //   // const longitude = currentLocation?.lng ? currentLocation.lng : 126.978 // 경도 (서울)
+  //   // setCurrentLocation({ lat: latitude, lng: longitude })
+  // }, [currentLocation])
 
   return { currentLocation, currentAddress, error, requestLocation }
 }

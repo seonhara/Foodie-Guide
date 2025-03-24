@@ -9,26 +9,24 @@ import useGetRestaurants from '@/hooks/useGetRestaurants'
 
 const Home = () => {
   const savedMessage = sessionStorage.getItem('messageList')
-  // const [messageList, setMessageList] = useState(savedMessage ? JSON.parse(savedMessage) : [])
-  const [messageList, setMessageList] = useState([])
-  const [buttonList, setButtonList] = useState({})
+  const [messageList, setMessageList] = useState(savedMessage ? JSON.parse(savedMessage) : [])
+  const [buttonData, setButtonData] = useState(sideBtnData)
   const [userInput, setUserInput] = useState('')
   const [timeState, setTimeState] = useState(0)
-  const { currentLocation, currentAddress, error, requestLocation } = useGeoLocation()
+  const [isLoading, setIsLoading] = useState(false)
+  const { currentLocation, currentAddress, error: geoError, requestLocation } = useGeoLocation()
 
   const [menus, setMenus] = useState([])
   const [otherLocation, setOtherLocation] = useState('')
 
-  const { restaurants, nearestIndex, loading, resError = error } = useGetRestaurants(menus[0], otherLocation)
+  const { restaurants, nearestIndex, loading, error: resError, getRestaurants } = useGetRestaurants(menus, currentLocation, currentAddress, otherLocation)
   const messageEndRef = useRef(null)
-  // const chatCategory = ['먹고 싶은 음식점 메뉴 설명 및 추천', '식당 추천 요청 또는 특정 메뉴 언급']
   const chatCategory = [
-    '일반 대화',
-    '음식점 메뉴 추천 없이 일반 질문',
+    // '일반 대화',
+    // '음식점 메뉴 추천 없이 일반 질문',
     '음식점 메뉴 추천',
     '본인 상태 알림 및 관련 음식점 메뉴 추천',
     '먹고 싶은 음식점 메뉴 설명 및 추천',
-    '식당 추천 요청 또는 특정 메뉴 언급',
   ]
 
   const addUserMessage = (input) => {
@@ -43,7 +41,9 @@ const Home = () => {
   const addBotMessage = async (query) => {
     const result = await getAiagent(query)
     const hasCat = chatCategory.includes(result.category)
+    console.log('result', result)
 
+    setIsLoading(false)
     if (!hasCat) {
       const newMessage = {
         fromWho: 'bot',
@@ -53,10 +53,14 @@ const Home = () => {
       setMessageList((prev) => [...prev, newMessage])
     } else {
       // 식당 추천해주는 경우 -> list 불러오기
-      const menus = result.menus
-        .replace('답변: ', '')
-        .split(', ')
-        .map((item) => item.trim())
+      const menus = result.menus.split(',')
+
+      const newMessage = {
+        fromWho: 'bot',
+        type: 'text',
+        cont: [result.reply, `추천 메뉴: ${menus}`],
+      }
+      setMessageList((prev) => [...prev, newMessage])
       setMenus(menus)
     }
   }
@@ -64,40 +68,44 @@ const Home = () => {
   const submitMessage = async (event, user_message) => {
     event.preventDefault()
     addUserMessage(user_message)
+    setIsLoading(true)
     await addBotMessage(user_message)
   }
 
   useEffect(() => {
+    menus.length > 0 && getRestaurants()
+  }, [menus])
+
+  useEffect(() => {
     // 식당 list 추가
-    if (!restaurants && nearestIndex == -1) return
+    console.log('????', restaurants, nearestIndex)
+
+    if (restaurants.length == 0 && nearestIndex == -1) return
 
     const newMessage = {
       fromWho: 'bot',
       type: 'list',
-      cont: restaurants.map((item) => {
-        return { ...item, imgPath: 'http://emilcarlsson.se/assets/mikeross.png' }
-      }),
+      cont: restaurants,
+      nearestIndex: nearestIndex,
     }
-    const mapData = { items: restaurants, nearestIndex: nearestIndex, currentAddress: currentAddress }
-    sessionStorage.setItem('mapData', JSON.stringify(mapData))
+
     setMessageList((prev) => [...prev, newMessage])
   }, [nearestIndex])
 
-  useEffect(() => {
-    setButtonList(sideBtnData)
+  // useEffect(() => {
 
-    // let timer = setTimeout(() => {
-    //   setTimeState(-1)
-    // }, 2000)
-    // return () => {
-    //   clearTimeout(timer)
-    // }
-  }, [])
+  //   // let timer = setTimeout(() => {
+  //   //   setTimeState(-1)
+  //   // }, 2000)
+  //   // return () => {
+  //   //   clearTimeout(timer)
+  //   // }
+  // }, [])
 
   useEffect(() => {
     console.log('messageList', messageList)
 
-    // sessionStorage.setItem('messageList', JSON.stringify(messageList))
+    sessionStorage.setItem('messageList', JSON.stringify(messageList))
     messageList.length > 0 && messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
     messageList.length > 0 && setTimeState(-1)
   }, [messageList])
@@ -105,9 +113,18 @@ const Home = () => {
   return (
     <div id="frame">
       <div id="sidepanel">
-        {/* {buttonList.map((item, index) => {
-          return <CommonBtn type={item.type} text={item.text} linkTo={item.linkTo ? item.linkTo : ''} onClick={(event) => submitMessage(event, item.message)} key={index} />
-        })} */}
+        {Object.keys(buttonData).map((data) => {
+          return (
+            <div className="category" key={data}>
+              <h2>{data}</h2>
+              <div className="btn-wrap">
+                {buttonData[data].map((item, index) => {
+                  return <CommonBtn type={item.type} text={item.text} linkTo={item.linkTo ? item.linkTo : ''} onClick={(event) => submitMessage(event, item.message)} key={`${data}-${index}`} />
+                })}
+              </div>
+            </div>
+          )
+        })}
       </div>
       <div className="content">
         <div className="title">
@@ -120,9 +137,11 @@ const Home = () => {
             onClick={(e) => {
               e.preventDefault()
               requestLocation()
+              geoError && alert(geoError)
             }}
           />
           <div className={timeState === 0 ? 'info show' : 'info'}>
+            <p>위치 권한을 활성화한 후</p>
             <p>현재 위치를 공유해 주시면</p>
             <p>당신의 근처 식당을 추천해 드릴게요!</p>
           </div>
@@ -139,8 +158,9 @@ const Home = () => {
             <>
               <div>
                 {messageList.map((item, index) => {
-                  return <Message fromWho={item.fromWho} type={item.type} cont={item.cont} linkToData={item.linkToData || {}} key={index} />
+                  return <Message fromWho={item.fromWho} type={item.type} cont={item.cont} linkToData={item.linkToData || {}} nearestIndex={item.nearestIndex} key={index} />
                 })}
+                <Message className={isLoading ? 'loading show' : 'loading'} fromWho="bot" type="text" cont="답변을 작성 중 입니다..." />
               </div>
               <div ref={messageEndRef}></div>
             </>

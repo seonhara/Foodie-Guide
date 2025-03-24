@@ -1,5 +1,5 @@
 const sideBtnData = {
-  body: [
+  건강: [
     {
       type: 'button',
       text: '배아픔',
@@ -26,7 +26,7 @@ const sideBtnData = {
       message: '머리가 잘안돌아가 뇌에 좋은 메뉴 추천해줘',
     },
   ],
-  food: [
+  음식: [
     {
       type: 'button',
       text: '비건',
@@ -58,7 +58,7 @@ const sideBtnData = {
       message: '양식이 먹고 싶은데 양식 메뉴 추천해줘',
     },
   ],
-  religion: [
+  종교: [
     {
       type: 'button',
       text: '이슬람교',
@@ -80,7 +80,7 @@ const sideBtnData = {
       message: '나 불교 신자야. 채식 위주의 간소한 식사를 원해. 적당한 식당 추천해줘.',
     },
   ],
-  diet: [
+  다이어트: [
     {
       type: 'button',
       text: '저탄수화물',
@@ -97,7 +97,7 @@ const sideBtnData = {
       message: '나 요즘 다이어트 중이야. 샐러드 파는 곳 없을까?',
     },
   ],
-  country: [
+  나라: [
     {
       type: 'button',
       text: '그리스',

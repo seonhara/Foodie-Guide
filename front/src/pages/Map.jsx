@@ -8,7 +8,7 @@ import styles from '@/assets/style/components/map.module.css'
 const Map = () => {
   const savedMapData = sessionStorage.getItem('mapData')
   const [mapData, setMapData] = useState(savedMapData ? JSON.parse(savedMapData) : {})
-  const { currentLocation, error, requestLocation } = useGeoLocation()
+  const { currentLocation, currentAddress, error: geoError, requestLocation } = useGeoLocation()
   const mapElement = useRef(null)
   const mapRef = useRef(null) // 지도 객체를 저장할 ref
   const markersRef = useRef([]) // 마커들을 저장할 ref
@@ -16,7 +16,7 @@ const Map = () => {
   const [currentMarker, setCurrentMarker] = useState(mapData.items[mapData.nearestIndex])
 
   useEffect(() => {
-    console.log('currentLocation', currentLocation)
+    console.log('currentLocation', mapData)
 
     if (window.naver) {
       // 지도 초기화 (처음 한 번만 실행)
@@ -44,10 +44,9 @@ const Map = () => {
 
       // 음식점 마커 추가
       if (mapData.items) {
-        mapData.items.forEach((loc) => {
-          const { title, lng, lat } = loc
+        mapData.items.forEach((item) => {
           const marker = new window.naver.maps.Marker({
-            position: new window.naver.maps.LatLng(lat, lng),
+            position: new window.naver.maps.LatLng(item.lat, item.lng),
             map: mapRef.current,
           })
           markersRef.current.push(marker)
@@ -55,7 +54,7 @@ const Map = () => {
           // 마커 클릭 시 현재 데이터 변경
           window.naver.maps.Event.addListener(marker, 'click', () => {
             console.log('marker', marker)
-            setCurrentMarker({ ...loc })
+            setCurrentMarker({ ...item })
           })
         })
       }
@@ -63,13 +62,15 @@ const Map = () => {
   }, [])
 
   return (
-    <div className={styles.map}>
-      <div className={styles.info}>
-        <h2>title: {currentMarker?.title}</h2>
+    <div id="frame">
+      <div id="sidepanel" className={styles.info}>
+        <h2 dangerouslySetInnerHTML={{ __html: `title: ${currentMarker?.title}` }}></h2>
         <p>lng: {currentMarker?.lng}</p>
         <p>lat: {currentMarker?.lat}</p>
+        <p>address: {currentMarker?.address}</p>
+        <p>link: {currentMarker?.link}</p>
       </div>
-      <div ref={mapElement} className={styles.navermap} />
+      <div ref={mapElement} className="content" />
       {/* <iframe id="iframe" src={`https://map.naver.com/p/search/${mapData.currentAddress} ${mapData.items[mapData.nearestIndex]?.title}`} title="Naver Map"></iframe> */}
     </div>
   )
