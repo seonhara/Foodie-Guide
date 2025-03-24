@@ -15,7 +15,6 @@
   max-width: 70%;
 }
 .box {
-  display: inline-flex;
   padding: 10px 15px;
   margin-top: 4px;
   border-radius: 20px;
@@ -61,25 +60,13 @@
 }
 .food_title {
   font-size: 18px;
-  font-weight: bold;
-  font-family: "Quicksand", sans-serif;
 }
-
-
-.food_address{
-  content: "• "; /* 글머리 기호 */
-  color: whitesmoke;  /* 글머리 색상 */
-  margin-right: 5px; /* 글과의 간격 */
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-
-.food_link {
-  color: blue;
-  text-decoration: underline;
+.food_address {
   margin-top: 10px;
-  margin-left: 10px;
+  font-size: 14px;
+}
+.food_link {
+  margin-top: 10px;
   font-size: 14px;
 }
 .btn {
@@ -95,25 +82,3 @@
 .btn:hover {
   background: rgba(67, 95, 122, 0.7);
 }
-
-/* list_style */
-.contact_list {
-  list-style-type: none;
-  margin-top: 5px;
-  margin-left: -30px;
-  padding-right: 20px;
-}
-
-.list_item {
-  line-height: 1;
-  margin-left: 20px;
-  color: #aaa;
-}
-
-.list {
-  margin-top: 10px;
-  margin-left: 10px;
-}
-
-
-
