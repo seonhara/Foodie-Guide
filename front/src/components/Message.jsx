@@ -1,5 +1,6 @@
-import styles from '@/assets/style/components/message.module.css'
 import CommonBtn from '@/components/CommonBtn'
+import { useEffect, useState } from 'react'
+import styles from '@/assets/style/components/message.module.css'
 
 const Message = (props) => {
   return (

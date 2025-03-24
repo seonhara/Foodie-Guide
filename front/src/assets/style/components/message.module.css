@@ -16,14 +16,11 @@
 }
 .box {
   padding: 10px 15px;
-  margin-top: 4px;
+  margin-bottom: 4px;
   border-radius: 20px;
   max-width: 100%;
   line-height: 130%;
   font-size: 14px;
-}
-.box:first-child {
-  margin-top: 0px;
 }
 
 .message.sent {

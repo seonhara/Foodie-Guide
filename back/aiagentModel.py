@@ -8,11 +8,13 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = openai.OpenAI(api_key=OPENAI_API_KEY) 
 
 CHAT_NORMAL = "일반 대화"
-CHAT_MENURCMD = "메뉴 추천"
-CHAT_MENURCMD_MYCOND = "본인 상태 알림 및 관련 메뉴 추천"
-CHAT_MENURCMD_MYTASTE = "먹고 싶은 메뉴 설명 및 추천"
+CHAT_ASKMORE = "음식점 메뉴 추천 없이 일반 질문"
+CHAT_MENURCMD = "음식점 메뉴 추천"
+CHAT_MENURCMD_MYCOND = "본인 상태 알림 및 관련 음식점 메뉴 추천"
+CHAT_MENURCMD_MYTASTE = "먹고 싶은 음식점 메뉴 설명 및 추천"
+CHAT_MENURCMD_RESTAURANT = "식당 추천 요청 또는 특정 메뉴 언급"
 
-CHAT_TYPES = [CHAT_NORMAL, CHAT_MENURCMD, CHAT_MENURCMD_MYCOND, CHAT_MENURCMD_MYTASTE]
+CHAT_TYPES = [CHAT_NORMAL, CHAT_ASKMORE, CHAT_MENURCMD, CHAT_MENURCMD_MYCOND, CHAT_MENURCMD_MYTASTE, CHAT_MENURCMD_RESTAURANT]
 
 
 def classify_request(user_input):
@@ -25,7 +27,7 @@ def classify_request(user_input):
     
     답변 형식은 반드시 다음과 같이 해줘:
     
-    분류: [카테고리명]
+    분류: 카테고리명
     
     """
 
@@ -51,7 +53,7 @@ def extract_and_search_menu(text):
     
     답변 형식은 반드시 다음과 같이 해줘:
     
-    메뉴1,메뉴2,메뉴3,메뉴4,메뉴5,...
+    답변: 메뉴1,메뉴2,메뉴3,메뉴4,메뉴5,...
     
     """
 
@@ -84,7 +86,7 @@ def chat(user_message):
     print("🚨🚨🚨🚨 bot_reply", bot_reply)
 
     link_exist = False
-    if category in [CHAT_MENURCMD, CHAT_MENURCMD_MYTASTE, CHAT_MENURCMD_MYCOND]:
+    if category in [CHAT_MENURCMD, CHAT_MENURCMD_MYTASTE, CHAT_MENURCMD_MYCOND, CHAT_MENURCMD_RESTAURANT]:
         menus = extract_and_search_menu(bot_reply)
         link_exist = True
     else:

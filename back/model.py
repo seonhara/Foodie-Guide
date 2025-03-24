@@ -111,7 +111,7 @@ def get_menu_message(text):
     
     답변 형식은 반드시 다음과 같이 해줘:
     
-    메뉴1,메뉴2,메뉴3,메뉴4,메뉴5,...
+    답변: 메뉴1,메뉴2,메뉴3,메뉴4,메뉴5,...
     
     """
     system_message = SystemMessage(content="너는 입력된 문장에서 추천하는 메뉴나 먹기 좋은 메뉴를 추출하는 AI야.")
