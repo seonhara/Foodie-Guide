@@ -2,8 +2,7 @@ from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 import os
 from dotenv import load_dotenv
-import aiagentModel
-import model
+import aiagent_model
 load_dotenv() 
 
 app = Flask(__name__)
@@ -14,16 +13,9 @@ CORS(app)  # Vite 프론트엔드와 CORS 문제 방지
 @app.route("/api/aiagent", methods=["POST"])
 def aiagent():
     user_message = request.json["message"]
-    data = aiagentModel.chat(user_message)
+    data = aiagent_model.chat(user_message)
     
     return jsonify(data)
-
-# @app.route("/api/aiagent", methods=["POST"])
-# def aiagent():
-#     user_message = request.json["message"]
-#     data = model.chat(user_message)  
-
-#     return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
