@@ -10,9 +10,14 @@ const CommonBtn = (props) => {
         </button>
       )}
       {props.type == 'link' && (
-        <Link to={props.linkTo} className={styles.btn}>
+        <Link to={props.linkTo} className={styles.btn} onClick={props.onClick}>
           {props.text}
         </Link>
+      )}
+      {props.type == 'a' && (
+        <a href={props.linkTo} className={styles.btn} target="_blank">
+          {props.text}
+        </a>
       )}
     </>
   )
