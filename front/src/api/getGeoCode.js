@@ -12,8 +12,6 @@ export const getGeoCode = async (lat, lng) => {
     })
 
     const data = await response.json()
-    console.log(import.meta.env.VITE_X_NCP_APIGW_API_KEY_ID);
-    console.log(import.meta.env.VITE_X_NCP_APIGW_API_KEY);
     console.log('response', data)
     return data.results[0].region || []
   } catch (error) {
