@@ -104,7 +104,6 @@ const Home = () => {
 
   useEffect(() => {
     console.log('messageList', messageList)
-
     sessionStorage.setItem('messageList', JSON.stringify(messageList))
     messageList.length > 0 && messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
     messageList.length > 0 && setTimeState(-1)
