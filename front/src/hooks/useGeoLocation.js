@@ -9,7 +9,6 @@ const useGeoLocation = (options) => {
   const getcurrentAddress = async (latitude, longitude) => {
     const geoCode = await getGeoCode(latitude || currentLocation.lat, longitude || currentLocation.lng)
     const address = `${geoCode.area1.name} ${geoCode.area2.name} ${geoCode.area3.name}`
-    console.log('address', address)
 
     setCurrentAddress(address)
   }
@@ -18,7 +17,6 @@ const useGeoLocation = (options) => {
     const { latitude, longitude } = pos.coords
     setCurrentLocation({ lat: latitude, lng: longitude })
     await getcurrentAddress(latitude, longitude)
-    console.log('??', latitude, longitude)
   }
 
   const handleError = (err) => {
@@ -44,22 +42,11 @@ const useGeoLocation = (options) => {
 
     // 사용자가 버튼을 눌렀을 때 위치 요청 실행 → 팝업이 자동으로 뜸
     navigator.geolocation.getCurrentPosition(handleSuccess, handleError, options || defaultOptions)
-    console.log('??', navigator.geolocation)
   }
 
   useEffect(() => {
     getcurrentAddress()
-    // requestLocation()
   }, [])
-
-  // useEffect(() => {
-  //   // console.log('currentLocation', currentLocation)
-  //   // console.log('currentAddress', currentAddress)
-  //   // getcurrentAddress()
-  //   // const latitude = currentLocation?.lat ? currentLocation.lat : 37.5665 //  위도 (서울)
-  //   // const longitude = currentLocation?.lng ? currentLocation.lng : 126.978 // 경도 (서울)
-  //   // setCurrentLocation({ lat: latitude, lng: longitude })
-  // }, [currentLocation])
 
   return { currentLocation, currentAddress, error, requestLocation }
 }

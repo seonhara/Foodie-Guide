@@ -247,8 +247,33 @@ body {
 }
 
 /* 네이버 지도 */
+#frame.naver #sidepanel h2 {
+  font-size: 30px;
+  word-break: keep-all;
+  margin-top: 14px;
+}
+#frame.naver #sidepanel hr {
+  margin: 20px 0px 24px;
+}
+#frame.naver #sidepanel h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+#frame.naver #sidepanel p {
+  font-size: 16px;
+  margin: 20px 0px;
+  padding-left: 26px;
+  word-break: keep-all;
+}
+#frame.naver #sidepanel a {
+  display: block;
+  text-align: center;
+}
 #iframe {
-  width: 100%;
-  height: calc(100vh - 30px);
+  position: absolute;
+  top: 0;
+  left: -63px;
+  width: calc(100% + 63px);
+  height: 100%;
   border: none;
 }
