@@ -53,7 +53,7 @@ def extract_menus_from_text(text):
     =======================================================
     문장: "{text}"
     =======================================================
-    답변 형식은 반드시 다음과 같이 해줘:
+    답변 형식은 반드시 중복없이 다음과 같이 해줘:
     
     메뉴1,메뉴2,메뉴3,메뉴4,메뉴5
     
@@ -63,7 +63,8 @@ def extract_menus_from_text(text):
     rag.load_vector_index()
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[{"role": "system", "content": "너는 입력된 문장에서 추천하는 메뉴나 먹기 좋은 메뉴를 제안하는 AI야."},
+        messages=[{"role": "system", "content": "너는 사용자의 상태를 입력된 문장에서 판단하여 먹기 좋은 메뉴를 제안하는 AI야."},
+                  {"role": "system", "content": "너는 입력된 문장에서 사용자가 메뉴 추천을 원하지 않고 상태만 나열할 경우 적절한 의학적 답변을 주거나 먹기 좋은 메뉴를 제안하는 AI야."},
                   {"role": "system", "content": "고유대명사는 제외하고 일반적인 메뉴로만 대답하고, 답변 형식은 반드시 다음과 같이 해줘: 메뉴1,메뉴2,메뉴3,메뉴4,메뉴5"},
                   {"role": "user", "content": rag.search_and_wrap(prompt)}],
         temperature=0  # 일관된 응답을 위해 0으로 설정

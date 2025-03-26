@@ -18,12 +18,12 @@ const sideBtnData = {
     {
       type: 'button',
       text: '심장병',
-      message: '심장이 않좋아 심장에 좋은 메뉴 추천해줘',
+      message: '심장이 안좋아 심장에 좋은 메뉴 추천해줘',
     },
     {
       type: 'button',
       text: '뇌',
-      message: '머리가 잘안돌아가 뇌에 좋은 메뉴 추천해줘',
+      message: '머리가 잘 안 돌아가 뇌에 좋은 메뉴 추천해줘',
     },
   ],
   음식: [
@@ -106,7 +106,7 @@ const sideBtnData = {
     {
       type: 'button',
       text: '프랑스',
-      message: '나 한국에 사는 프랑스 사람인데 프랑스 음식이 그리워. 프랑스 식당 추천해줘',
+      message: '나 한국에 사는 프랑스 사람인데 프랑스 음식이 그리워. 프랑스 음식점 추천해줘',
     },
     {
       type: 'button',
