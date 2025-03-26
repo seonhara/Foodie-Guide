@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import useGeoLocation from '@/hooks/useGeoLocation'
+import CommonBtn from '@/components/CommonBtn'
 import styles from '@/assets/style/components/map.module.css'
 
 // mapData.items
@@ -16,8 +17,6 @@ const Map = () => {
   const [currentMarker, setCurrentMarker] = useState(mapData.items[mapData.nearestIndex])
 
   useEffect(() => {
-    console.log('currentLocation', mapData)
-
     if (window.naver) {
       // 지도 초기화 (처음 한 번만 실행)
       if (!mapRef.current) {
@@ -41,7 +40,6 @@ const Map = () => {
         },
       })
       markersRef.current.push(userMarker)
-
       // 음식점 마커 추가
       if (mapData.items) {
         mapData.items.forEach((item) => {
@@ -62,16 +60,18 @@ const Map = () => {
   }, [])
 
   return (
-    <div id="frame">
+    <div id="frame" className="naver">
       <div id="sidepanel" className={styles.info}>
-        <h2 dangerouslySetInnerHTML={{ __html: `title: ${currentMarker?.title}` }}></h2>
-        <p>lng: {currentMarker?.lng}</p>
-        <p>lat: {currentMarker?.lat}</p>
-        <p>address: {currentMarker?.address}</p>
-        <p>link: {currentMarker?.link}</p>
+        <h2 dangerouslySetInnerHTML={{ __html: `${currentMarker?.title}` }}></h2>
+        <hr />
+        <h3>🍴 위치</h3>
+        <p>{currentMarker?.address}</p>
+        <h3>🍴 대표메뉴</h3>
+        <p>{currentMarker?.menu}</p>
+        {/* <iframe id="iframe" src={`https://map.naver.com/p/search/${mapData.currentAddress} ${mapData.items[mapData.nearestIndex]?.title}`} title="Naver Map"></iframe> */}
+        {currentMarker?.link && <CommonBtn type="a" text="자세히 보기" linkTo={currentMarker?.link} />}
       </div>
       <div ref={mapElement} className="content" />
-      {/* <iframe id="iframe" src={`https://map.naver.com/p/search/${mapData.currentAddress} ${mapData.items[mapData.nearestIndex]?.title}`} title="Naver Map"></iframe> */}
     </div>
   )
 }

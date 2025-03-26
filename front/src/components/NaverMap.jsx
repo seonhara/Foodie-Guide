@@ -14,8 +14,6 @@ const NaverMap = (props) => {
   const [currentMarker, setCurrentMarker] = useState(props.data.items[props.data.nearestIndex])
 
   useEffect(() => {
-    console.log('currentLocation', currentLocation)
-
     if (window.naver && currentLocation) {
       // 지도 초기화 (처음 한 번만 실행)
       if (!mapRef.current) {

@@ -41,7 +41,6 @@ const Home = () => {
   const addBotMessage = async (query) => {
     const result = await getAiagent(query)
     const hasCat = chatCategory.includes(result.category)
-    console.log('result', result)
 
     setIsLoading(false)
     if (!hasCat) {
@@ -78,8 +77,6 @@ const Home = () => {
 
   useEffect(() => {
     // 식당 list 추가
-    console.log('????', restaurants, nearestIndex)
-
     if (restaurants.length == 0 && nearestIndex == -1) return
 
     const newMessage = {
@@ -92,19 +89,7 @@ const Home = () => {
     setMessageList((prev) => [...prev, newMessage])
   }, [nearestIndex])
 
-  // useEffect(() => {
-
-  //   // let timer = setTimeout(() => {
-  //   //   setTimeState(-1)
-  //   // }, 2000)
-  //   // return () => {
-  //   //   clearTimeout(timer)
-  //   // }
-  // }, [])
-
   useEffect(() => {
-    console.log('messageList', messageList)
-
     sessionStorage.setItem('messageList', JSON.stringify(messageList))
     messageList.length > 0 && messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
     messageList.length > 0 && setTimeState(-1)

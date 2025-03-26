@@ -1,6 +1,4 @@
 export const langchain = async (features) => {
-  console.log('features', features)
-
   try {
     const response = await fetch('/api/langchain', {
       method: 'POST',

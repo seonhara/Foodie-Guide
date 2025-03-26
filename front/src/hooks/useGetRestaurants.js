@@ -8,8 +8,6 @@ const useGetRestaurants = (menus, currentLocation, currentAddress, otherLocation
   const [error, setError] = useState(null)
 
   const getRestaurants = async () => {
-    console.log('!!!', menus, currentLocation)
-
     if (menus.length == 0 || !currentLocation) return // 필수 값이 없으면 실행하지 않음
 
     setLoading(true)
@@ -21,7 +19,6 @@ const useGetRestaurants = (menus, currentLocation, currentAddress, otherLocation
         let query = otherLocation ? `${otherLocation} ${menu}` : `${currentAddress} ${menu}`
 
         const resultByNaverMap = await getRestaurantsByNaverMap(query)
-        console.log('getRestaurantsByNaverMap', resultByNaverMap)
 
         const mappedResults = resultByNaverMap.map((item) => ({
           title: item.title,
@@ -29,6 +26,7 @@ const useGetRestaurants = (menus, currentLocation, currentAddress, otherLocation
           link: item.link,
           lat: Number(item.mapy) / 10 ** 7,
           lng: Number(item.mapx) / 10 ** 7,
+          menu: menu,
         }))
 
         results.push(...mappedResults)
