@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "https://foodie-guide-production.up.railway.app/api/:path*"
+    },
+    {
       "source": "/v1/:path*",
       "destination": "https://openapi.naver.com/v2/:path*"
     },
