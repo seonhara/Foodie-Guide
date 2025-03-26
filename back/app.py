@@ -18,5 +18,6 @@ def aiagent():
     return jsonify(data)
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # 환경 변수 PORT가 없으면 기본값 5000 사용
-    app.run(host="0.0.0.0", port=port, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    debug_mode = os.environ.get("FLASK_DEBUG", "False") == "True"
+    app.run(host="0.0.0.0", port=port, debug=debug_mode)

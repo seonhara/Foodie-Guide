@@ -6,7 +6,7 @@
     },
     {
       "source": "/v1/:path*",
-      "destination": "https://openapi.naver.com/v2/:path*"
+      "destination": "https://openapi.naver.com/v1/:path*"
     },
     {
       "source": "/v2/:path*",
