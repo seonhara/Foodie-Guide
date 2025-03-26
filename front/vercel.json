@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/v1/:path*",
+      "destination": "https://openapi.naver.com/v2/:path*"
+    },
+    {
+      "source": "/v2/:path*",
+      "destination": "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/:path*"
+    }
+  ]
+}
