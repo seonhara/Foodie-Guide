@@ -13,7 +13,6 @@ const Map = () => {
   const mapElement = useRef(null)
   const mapRef = useRef(null) // 지도 객체를 저장할 ref
   const markersRef = useRef([]) // 마커들을 저장할 ref
-  const infoWindowRef = useRef(null) // InfoWindow 객체를 저장할 ref
   const [currentMarker, setCurrentMarker] = useState(mapData.items[mapData.nearestIndex])
 
   useEffect(() => {
@@ -42,17 +41,23 @@ const Map = () => {
       markersRef.current.push(userMarker)
       // 음식점 마커 추가
       if (mapData.items) {
-        mapData.items.forEach((item) => {
+        mapData.items.forEach((item, index) => {
           const marker = new window.naver.maps.Marker({
             position: new window.naver.maps.LatLng(item.lat, item.lng),
             map: mapRef.current,
+            icon: `https://maps.google.com/mapfiles/ms/icons/${mapData.nearestIndex == index ? 'red' : 'blue'}-dot.png`,
           })
           markersRef.current.push(marker)
 
           // 마커 클릭 시 현재 데이터 변경
           window.naver.maps.Event.addListener(marker, 'click', () => {
-            console.log('marker', marker)
             setCurrentMarker({ ...item })
+
+            markersRef.current.forEach((m, i) => {
+              if (i == 0) return
+              m.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+            })
+            marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
           })
         })
       }
