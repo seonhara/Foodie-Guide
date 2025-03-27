@@ -1,26 +1,30 @@
 import { useEffect, useRef, useState } from 'react'
-import useGeoLocation from '@/hooks/useGeoLocation'
+import { useNavigate } from 'react-router-dom'
 import CommonBtn from '@/components/CommonBtn'
 import styles from '@/assets/style/components/map.module.css'
-
-// mapData.items
-// restaurants: 네이버 지도 검색 api의 결과의 items 배열
 
 const Map = () => {
   const savedMapData = sessionStorage.getItem('mapData')
   const [mapData, setMapData] = useState(savedMapData ? JSON.parse(savedMapData) : {})
-  const { currentLocation, currentAddress, error: geoError, requestLocation } = useGeoLocation()
   const mapElement = useRef(null)
   const mapRef = useRef(null) // 지도 객체를 저장할 ref
   const markersRef = useRef([]) // 마커들을 저장할 ref
-  const [currentMarker, setCurrentMarker] = useState(mapData.items[mapData.nearestIndex])
+  const [currentMarker, setCurrentMarker] = useState(mapData?.items ? mapData?.items[mapData?.nearestIndex] : -1)
+  const navigate = useNavigate()
 
   useEffect(() => {
+    if (Object.keys(mapData).length === 0) {
+      navigate('/', { replace: true }) // ✅ 메인 페이지로 리다이렉트
+    }
+  }, [navigate])
+
+  useEffect(() => {
+    if (Object.keys(mapData).length === 0) return
     if (window.naver) {
       // 지도 초기화 (처음 한 번만 실행)
       if (!mapRef.current) {
         mapRef.current = new window.naver.maps.Map(mapElement.current, {
-          center: new window.naver.maps.LatLng(currentLocation.lat, currentLocation.lng),
+          center: new window.naver.maps.LatLng(mapData.currentLocation.lat, mapData.currentLocation.lng),
           zoom: 15,
         })
       }
@@ -31,7 +35,7 @@ const Map = () => {
 
       // 현재 위치 마커 추가
       const userMarker = new window.naver.maps.Marker({
-        position: new window.naver.maps.LatLng(currentLocation.lat, currentLocation.lng),
+        position: new window.naver.maps.LatLng(mapData.currentLocation.lat, mapData.currentLocation.lng),
         map: mapRef.current,
         icon: {
           content: '<div style="font-size: 30px;">📍</div>',

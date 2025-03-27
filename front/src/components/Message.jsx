@@ -5,11 +5,11 @@ import styles from '@/assets/style/components/message.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Message = (props) => {
-  const { currentAddress } = useGeoLocation()
+  // const { currentLocation } = useGeoLocation()
   const saveSessionMapData = () => {
     const savedMapData = sessionStorage.getItem('mapData')
     savedMapData && sessionStorage.removeItem('mapData')
-    const mapData = { items: props.cont, nearestIndex: props.nearestIndex, currentAddress: currentAddress }
+    const mapData = { items: props.cont, nearestIndex: props.nearestIndex, currentLocation: props.currentLocation }
     sessionStorage.setItem('mapData', JSON.stringify(mapData))
   }
 

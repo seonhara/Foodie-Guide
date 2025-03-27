@@ -50,7 +50,7 @@ const NaverMap = (props) => {
 
           // 마커 클릭 시 현재 데이터 변경
           window.naver.maps.Event.addListener(marker, 'click', () => {
-            console.log('marker', marker)
+            // console.log('marker', marker)
             setCurrentMarker({ ...loc })
           })
         })

@@ -3,7 +3,7 @@ import { getGeoCode } from '@/api/getGeoCode'
 
 const useGeoLocation = (options) => {
   const [currentLocation, setCurrentLocation] = useState({ lat: 37.5665, lng: 126.978 })
-  const [currentAddress, setCurrentAddress] = useState('')
+  const [currentAddress, setCurrentAddress] = useState('서울특별시 중구 태평로1가')
   const [error, setError] = useState('')
 
   const getcurrentAddress = async (latitude, longitude) => {
@@ -43,10 +43,6 @@ const useGeoLocation = (options) => {
     // 사용자가 버튼을 눌렀을 때 위치 요청 실행 → 팝업이 자동으로 뜸
     navigator.geolocation.getCurrentPosition(handleSuccess, handleError, options || defaultOptions)
   }
-
-  useEffect(() => {
-    getcurrentAddress()
-  }, [])
 
   return { currentLocation, currentAddress, error, requestLocation }
 }

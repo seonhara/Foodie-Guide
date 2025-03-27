@@ -84,6 +84,7 @@ const Home = () => {
       type: 'list',
       cont: restaurants,
       nearestIndex: nearestIndex,
+      currentLocation: currentLocation,
     }
 
     setMessageList((prev) => [...prev, newMessage])
@@ -143,7 +144,17 @@ const Home = () => {
             <>
               <div>
                 {messageList.map((item, index) => {
-                  return <Message fromWho={item.fromWho} type={item.type} cont={item.cont} linkToData={item.linkToData || {}} nearestIndex={item.nearestIndex} key={index} />
+                  return (
+                    <Message
+                      fromWho={item.fromWho}
+                      type={item.type}
+                      cont={item.cont}
+                      linkToData={item.linkToData || {}}
+                      nearestIndex={item.nearestIndex}
+                      currentLocation={item.currentLocation}
+                      key={index}
+                    />
+                  )
                 })}
                 <Message className={isLoading ? 'loading show' : 'loading'} fromWho="bot" type="text" cont="답변을 작성 중 입니다..." />
               </div>
