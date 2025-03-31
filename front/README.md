@@ -1,12 +1,95 @@
-# React + Vite
+# 📍 Foodie Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+당신만의 당신을 위한 식당 추천 시스템
 
-Currently, two official plugins are available:
+### [ 프로젝트 설명 ]
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+머신러닝 프로젝트 | 개발 기간: 2주 | 개발 인원: 2명(선하라, 유다솔)
 
-## Expanding the ESLint configuration
+- OpenAI의 **ChatGPT**(gpt-3.5-turbo)를 기반으로 한 **챗봇** 웹 서비스입니다.
+- 사용자의 건강 상태와 기호를 반영하여 음식 메뉴를 추천하고, 사용자의 위치를 기반으로 해당 메뉴를 판매하는 식당을 안내합니다.
+- 건강 데이터와 음식 재료 데이터를 활용해 **벡터 DB**를 구축하고 **RAG**를 적용하여 LLM의 환각 문제를 최소화했습니다.
+- **Prompt Engineering** 기법을 적용하여 서비스 최적화를 이루고자 했습니다.
+- Flask와 React 기반의 웹 개발 환경을 구축하여 **AI 모델을 실제 서비스에 적용**할 수 있는 역량 강화
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# 📍 배포 주소
+
+프론트엔드 서버:
+백엔드 서버:
+
+# 📍 **설치** 및 시작 가이드
+
+### [ Installation ]
+
+```bash
+git clone git@github.com:azultasul/Foodie-Guide.git
+```
+
+### [ Backend ]
+
+```bash
+cd back
+pip install -r requirements.txt
+python app.py
+```
+
+### [ Frontend ]
+
+```bash
+cd front
+npm install
+npm run dev
+```
+
+# 📍 기술스택
+
+![기술스택.png](attachment:cf02b7af-b6bb-4c44-bde0-64af1770452d:기술스택.png)
+
+# 📍 아키텍쳐 및 폴더 구조
+
+### [ 아키텍쳐 ]
+
+![아키텍쳐.png](attachment:f79c0201-007e-49c8-bf16-53fe964a53b7:아키텍쳐.png)
+
+### [ 폴더 구조 ]
+
+```bash
+foodieGuide/
+│── back/          # 백엔드(Flask)
+│   ├── venv/             # (선택) 가상 환경
+│   ├── docs/             # 벡터 DB에 사용되는 txt 파일
+│   ├── vector_store/     # FAISS 인덱스 및 chunks 파일
+│   ├── app.py            # Flask 메인 서버 파일
+│   ├── aiagent_model.py  # LLM 모델
+│   ├── RAG.py            # RAG 구현
+│   ├── File pre-processing.ipynb    # txt 파일 생성을 위한 전처리
+│   ├── build_vector_sotre.py        # 벡터 DB 빌드
+│   ├── requirements.txt  # Flask 패키지 리스트
+│── front/         # 프론트엔드(React + Vite)
+│   ├── public/
+│   ├── src/.             # React 코드
+│   │   ├── api/          # 딥러닝 모델, naver 등 API 파일
+│   │   ├── assets/       # style(css)
+│   │   ├── components/   # button, listitem 등 컴포넌트 모음
+│   │   ├── hooks/        # 커스텀 훅
+│   │   ├── pages/        # 메인 페이지 및 서브 페이지
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   ├── index.html        # Vite 엔트리 파일
+│   ├── package.json      # Vite 패키지 리스트
+│── .gitignore
+│── README.md
+```
+
+# 📍 주요 기능
+
+|-----------|------------|
+|![image.png](attachment:c55e740a-ddcf-4462-8adb-4eb95112e66a:image.png)| ⭐ **자동 완성 기능** <br />-사전 저장된 사용자 질의문 자동완성 |
+|-----------|------------|
+| ![image.png](attachment:af01cc86-9c06-45d0-9111-2a6280d5f4a6:image.png) | ⭐ **일반 대화 기능**<br />- 사용자와 챗봇의 일반 대화<br />⭐ **메뉴 추천 대화 기능**<br />- 사용자의 상태 기반의 식단 및 해당 식단을 제공하는 주변 식당 정보 제공|
+|![image.png](attachment:197f3776-25c3-4c78-9095-faf785abd734:image.png)| ⭐ **지도 기능**<br />- 사용자 위치 기반의 식당 정보를 지도로 표시<br />- 지도에 표시된 식당 정보 제공|
+
+|-----------|------------|------------|
+|![image.png](attachment:c55e740a-ddcf-4462-8adb-4eb95112e66a:image.png)| | ![image.png](attachment:af01cc86-9c06-45d0-9111-2a6280d5f4a6:image.png) |![image.png](attachment:197f3776-25c3-4c78-9095-faf785abd734:image.png) |
+|-----------|------------|------------|
+|⭐ **자동 완성 기능** <br />-사전 저장된 사용자 질의문 자동완성|⭐ **일반 대화 기능**<br />- 사용자와 챗봇의 일반 대화<br />⭐ **메뉴 추천 대화 기능**<br />- 사용자의 상태 기반의 식단 및 해당 식단을 제공하는 주변 식당 정보 제공|⭐ **지도 기능**<br />- 사용자 위치 기반의 식당 정보를 지도로 표시<br />- 지도에 표시된 식당 정보 제공|
